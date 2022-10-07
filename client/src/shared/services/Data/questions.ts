@@ -1,0 +1,66 @@
+
+   export const questions = [
+      {
+         question: "number 1",
+         answers: [
+            {
+               answer: "a bla bla",
+               correct: false
+            },
+            {
+               answer: "b bla bla",
+               correct: false
+            },
+            {
+               answer: "c bla bla",
+               correct: true
+            },
+            {
+               answer: "d bla bla",
+               correct: false
+            }
+         ]
+      },
+      {
+         question: "number 2",
+         answers: [
+            {
+               answer: "a bla bla",
+               correct: false
+            },
+            {
+               answer: "b bla bla",
+               correct: true
+            },
+            {
+               answer: "c bla bla",
+               correct: false
+            },
+            {
+               answer: "d bla bla",
+               correct: false
+            }
+         ]
+      },
+      {
+         question: "number 3",
+         answers: [
+            {
+               answer: "a bla bla",
+               correct: false
+            },
+            {
+               answer: "b bla bla",
+               correct: false
+            },
+            {
+               answer: "c bla bla",
+               correct: false
+            },
+            {
+               answer: "d bla bla",
+               correct: true
+            }
+         ]
+      }
+   ]
