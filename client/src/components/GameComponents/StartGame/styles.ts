@@ -19,5 +19,9 @@ export const Container = styled.div`
       span{
          color: ${({theme}) => theme.color.green};
       }
+
+      .gameOver{
+         color: ${({theme}) => theme.color.red};
+      }
    }
 `;

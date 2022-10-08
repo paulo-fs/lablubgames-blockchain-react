@@ -31,14 +31,14 @@ export function ContextProvider({children}: ProviderPropType){
 
     function handleAnswersCounters (isCorrect: boolean) {
         if(isCorrect) {
-            setCorrectAnswerCounter(prevState => prevState++);
+            setCorrectAnswerCounter(prevState => prevState +1);
         } else {
-            setWrongAnswerCounter(prevState => prevState++);
+            setWrongAnswerCounter(prevState => prevState +1);
         }
     }
 
     function handleQuestionsCounter() {
-        setQuestionsCounter(prevState => prevState++);
+        setQuestionsCounter(prevState => prevState +1);
     }
 
     return (

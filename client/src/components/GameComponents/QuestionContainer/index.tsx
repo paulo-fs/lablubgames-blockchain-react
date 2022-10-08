@@ -16,7 +16,7 @@ export default function QuestionContainer() {
    const [questionColection, setQuestionColection] = useState(questions);
    const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
 
-   function handleAnswerSelection(isCorrect: boolean, i: number){
+   function handleAnswerSelection(i: number){
       if(i === selectedAnswer) {
          return setSelectedAnswer(prevState => prevState = null);
       }
@@ -24,7 +24,10 @@ export default function QuestionContainer() {
    }
 
    function handleConfirmAnswer() {
-      // handleAnswersCounters()
+      handleAnswersCounters(questionColection[0].answers[selectedAnswer!].correct);
+      changeToNextQuestion();
+      setSelectedAnswer(null);
+      handleQuestionsCounter();
    }
    
    function changeToNextQuestion(){
@@ -44,14 +47,14 @@ export default function QuestionContainer() {
             questionColection[0].answers.map((answ, i) => {
                const isSelected = (i === selectedAnswer);
                return (
-                  <Answer key={answ.answer} isSelected={isSelected} onClick={() => handleAnswerSelection(answ.correct, i)}>
+                  <Answer key={answ.answer} isSelected={isSelected} onClick={() => handleAnswerSelection(i)}>
                      {answ.answer}
                   </Answer>
                );
             })
          }
 
-         <PrimaryButton disabled={!selectedAnswer} onClick={changeToNextQuestion}>Confirm answer</PrimaryButton>
+         <PrimaryButton disabled={!(typeof selectedAnswer === 'number')} onClick={handleConfirmAnswer}>Confirm answer</PrimaryButton>
 
          <WrongCorrectAnswerCounter />
       </Container>
