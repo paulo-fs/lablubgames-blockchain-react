@@ -1,11 +1,13 @@
+import { ButtonHTMLAttributes } from "react";
+
 import { Btn } from "./styles";
 
-interface BtnProps {
+interface BtnProps extends ButtonHTMLAttributes<HTMLButtonElement> {
    children: string;
 }
 
-export default function PrimaryButton({children}: BtnProps){
+export default function PrimaryButton({children, ...rest}: BtnProps){
    return(
-      <Btn>{children}</Btn>
+      <Btn {...rest}>{children}</Btn>
    )
 }
