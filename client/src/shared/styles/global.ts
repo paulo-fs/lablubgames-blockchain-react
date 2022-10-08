@@ -12,9 +12,10 @@ export const GlobalStyle = createGlobalStyle`
       -webkit-font-smoothing: antialiased;
       width: 100vw;
       max-width: 1400px;
-      height: 100vh;
+      height: auto;
       margin: 0 auto;
       overflow-x: hidden;
+      overflow-y: auto;
       background: ${({theme}) => theme.color.background};
    }
 
