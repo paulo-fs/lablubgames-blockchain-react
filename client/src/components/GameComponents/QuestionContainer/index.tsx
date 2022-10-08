@@ -1,17 +1,37 @@
-import { useState } from "react";
-
-import Answer from "../Answer";
+import { useContext, useState } from "react";
 
 import { questions } from "shared/services/Data/questions";
 
+import Answer from "../Answer";
+import {
+   PrimaryButton,
+   WrongCorrectAnswerCounter
+} from "components";
+
 import { Container } from "./styles";
+import { Context } from "shared/context";
 
 export default function QuestionContainer() {
+   const {handleAnswersCounters, handleQuestionsCounter} = useContext(Context);
    const [questionColection, setQuestionColection] = useState(questions);
-   console.log(questions);
+   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
 
-   function handleAnswerSelection(isCorrect: boolean){
-      console.log(isCorrect);
+   function handleAnswerSelection(isCorrect: boolean, i: number){
+      if(i === selectedAnswer) {
+         return setSelectedAnswer(prevState => prevState = null);
+      }
+      setSelectedAnswer(prevState => prevState = i);
+   }
+
+   function handleConfirmAnswer() {
+      // handleAnswersCounters()
+   }
+   
+   function changeToNextQuestion(){
+      const temporaryArray = questionColection;
+      const firstElement = temporaryArray.shift();
+      temporaryArray.push(firstElement!);
+      setQuestionColection([...temporaryArray]);
    }
 
    return (
@@ -21,19 +41,19 @@ export default function QuestionContainer() {
          </p>
          
          {
-            questionColection[0].answers.map(answ => {
+            questionColection[0].answers.map((answ, i) => {
+               const isSelected = (i === selectedAnswer);
                return (
-                  <Answer key={answ.answer} onClick={() => handleAnswerSelection(answ.correct)}>
+                  <Answer key={answ.answer} isSelected={isSelected} onClick={() => handleAnswerSelection(answ.correct, i)}>
                      {answ.answer}
                   </Answer>
                );
             })
          }
-         {/* <Answer>Aswer a</Answer>
-         <Answer>Aswer b</Answer>
-         <Answer>Aswer c</Answer>
-         <Answer>Aswer d</Answer> */}
 
+         <PrimaryButton disabled={!selectedAnswer} onClick={changeToNextQuestion}>Confirm answer</PrimaryButton>
+
+         <WrongCorrectAnswerCounter />
       </Container>
    )
 }
