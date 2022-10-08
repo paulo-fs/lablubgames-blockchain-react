@@ -1,64 +1,67 @@
 
    export const questions = [
       {
-         question: "number 1",
+         question: "What are the ways to define a variable in JavaScript?",
+         id: 1,
          answers: [
             {
-               answer: "a bla bla",
+               answer: "variable, constant, bool",
                correct: false
             },
             {
-               answer: "b bla bla",
+               answer: "var, int, con",
                correct: false
             },
             {
-               answer: "c bla bla",
+               answer: "var, let, const",
                correct: true
             },
             {
-               answer: "d bla bla",
+               answer: "bool, number, string",
                correct: false
             }
          ]
       },
       {
-         question: "number 2",
+         question: "In how many ways a JavaScript code can be involved in an HTML file?",
+         id: 2,
          answers: [
             {
-               answer: "a bla bla",
+               answer: "Just external",
                correct: false
             },
             {
-               answer: "b bla bla",
+               answer: "Inline, internal, external",
                correct: true
             },
             {
-               answer: "c bla bla",
+               answer: "Just inline and internal",
                correct: false
             },
             {
-               answer: "d bla bla",
+               answer: "Just in a tag <script> on header.",
                correct: false
             }
          ]
       },
       {
-         question: "number 3",
+         question: "Name some of the JavaScript Frameworks",
+         id: 3,
          answers: [
             {
-               answer: "a bla bla",
+               answer: "React, Springboot",
                correct: false
             },
             {
-               answer: "b bla bla",
+               answer: "Svelt, Angular, Entity",
                correct: false
             },
             {
-               answer: "c bla bla",
+               answer: "Nest, Next, Springboot",
                correct: false
             },
             {
-               answer: "d bla bla",
+               answer: "Angular, React, Vue, Svelt",
                correct: true
             }
          ]
