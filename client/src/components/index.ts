@@ -3,6 +3,7 @@ import CoinsControl from "./CoinsControl";
 import Footer from "./Footer";
 import QuestionContainer from "./GameComponents/QuestionContainer";
 import StartGame from "./GameComponents/StartGame";
+import WrongCorrectAnswerCounter from "./GameComponents/WrongCorrectAnswerCounter";
 import Header from "./Header";
 import Layout from "./Layout";
 
@@ -14,4 +15,5 @@ export {
    QuestionContainer,
    CoinsControl,
    StartGame,
+   WrongCorrectAnswerCounter,
 };
