@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-   width: clamp(10rem, 20rem + 25vw, 60rem);
-   padding: min(4rem, 1rem + 3vw);
+   width: clamp(10rem, 20rem + 25vw, 50rem);
+   padding: min(2rem, 1rem + 3vw);
 
    backdrop-filter: blur(150px);
    border-radius: 20px;
@@ -18,6 +18,6 @@ export const Container = styled.div`
    }
 
    button + button {
-      margin-top: 1rem;
+      margin-top: .5rem;
    }
 `;

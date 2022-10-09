@@ -6,7 +6,7 @@ interface ButtonProps {
 
 export const Container = styled.button<ButtonProps>`
    width: 100%;
-   padding: 2rem;
+   padding: 1.2rem 2rem;
 
    backdrop-filter: blur(40px);
    border-radius: 10px;
