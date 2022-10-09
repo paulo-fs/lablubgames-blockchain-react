@@ -1,4 +1,12 @@
-import { createContext, ReactNode, useState } from 'react';
+import { createContext, ReactNode, useEffect, useState } from 'react';
+import {
+    getWeb3,
+    getContract,
+    getAccount,
+    getBalanceOf,
+    getAllowance,
+ } from 'shared/services/loadWeb3';
+import { Contract } from 'web3-eth-contract';
 
 interface ProviderPropType{
    children: ReactNode;
@@ -10,6 +18,7 @@ interface ContextType {
     questionsCounter: number
     questionsIsStarted: boolean
     gameIsOver: boolean
+    selectedAccount: string | undefined
     handleStartQuestions: () => void
     handleAnswersCounters: (value: boolean) => void
     handleQuestionsCounter: () => void
@@ -23,6 +32,10 @@ export function ContextProvider({children}: ProviderPropType){
     const [questionsCounter, setQuestionsCounter] = useState(0);
     const [questionsIsStarted, setQuestionsIsStarted] = useState(false);
     const [gameIsOver, setGameIsOver] = useState(false);
+    const [selectedAccount, setSelectedAccount] = useState<string>();
+    const [lubyContract, setLubyContract] = useState<Contract | any>();
+    const [balanceOf, setBalanceOf] = useState<number>();
+
 
     function handleStartQuestions() {
         setQuestionsIsStarted(true);
@@ -48,6 +61,38 @@ export function ContextProvider({children}: ProviderPropType){
         }
     }
 
+    function detectAccountChange(): string{
+        const provider = (window as any).ethereum;
+        return provider.on('accountsChanged', (newAccounts: string[]) => {
+            console.log('account changed', newAccounts[0])
+            setSelectedAccount(newAccounts[0]);
+        })
+    }
+
+    useEffect(() => {
+        async function loadWeb3(){
+            const web3 = getWeb3();
+            const lubyGameContract = await getContract(web3);
+            const account = await getAccount(web3);
+            const balanceOf = getBalanceOf(lubyGameContract, account);
+            const allowanceOf = getAllowance(lubyGameContract, account);
+
+            setSelectedAccount(account);
+            setLubyContract(lubyGameContract);
+            setBalanceOf(balanceOf);
+        }
+        
+        detectAccountChange();
+
+        if(lubyContract){
+            return ;
+        }
+        loadWeb3();
+    }, [lubyContract]);
+
+    
+
+
     return (
         <Context.Provider value={{
             correctAnswerCounter,
@@ -55,6 +100,7 @@ export function ContextProvider({children}: ProviderPropType){
             questionsCounter,
             questionsIsStarted,
             gameIsOver,
+            selectedAccount,
             handleStartQuestions,
             handleAnswersCounters,
             handleQuestionsCounter
