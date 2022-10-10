@@ -4,7 +4,7 @@ import {
     getContract,
     getAccount,
  } from 'shared/services/loadWeb3';
- import {getBalanceIndividual, correctAnswer, incorrectAnswer} from 'shared/services/gameFunctions';
+ import {getBalanceIndividual, correctAnswer, incorrectAnswer, getBalanceOf} from 'shared/services/gameFunctions';
 import { Contract } from 'web3-eth-contract';
 
 interface ProviderPropType{
@@ -21,10 +21,12 @@ interface ContextType {
     lubyContract: any
     gameOwner: string
     playerBalance: any
+    walletBalance: any
     handleStartQuestions: () => void
     handleAnswersCounters: (value: boolean) => void
     handleQuestionsCounter: () => void
     updatePlayerBalance: () => void
+    updateWalletBalance: () => void
 }
 
 export const Context = createContext({} as ContextType);
@@ -39,6 +41,8 @@ export function ContextProvider({children}: ProviderPropType){
     const [selectedAccount, setSelectedAccount] = useState<string>();
     const [lubyContract, setLubyContract] = useState<Contract | any>();
     const [playerBalance, setPlayerBalance] = useState<number>();
+    const [walletBalance, setWalletBalance] = useState<number>();
+    const [firstRender, setFirstRender] = useState(true);
 
 
     function handleStartQuestions() {
@@ -49,13 +53,17 @@ export function ContextProvider({children}: ProviderPropType){
         setWrongAnswerCounter(prevState => prevState = 0);
     }
 
-    function handleAnswersCounters (isCorrect: boolean) {
+    async function handleAnswersCounters (isCorrect: boolean) {
         if(isCorrect) {
-            setCorrectAnswerCounter(prevState => prevState +1);
-            correctAnswer(lubyContract);
+            return correctAnswer(lubyContract, selectedAccount).then(() => {
+                setCorrectAnswerCounter(prevState => prevState +1);
+                updatePlayerBalance();
+            });
         } else {
-            setWrongAnswerCounter(prevState => prevState +1);
-            incorrectAnswer(lubyContract);
+            return incorrectAnswer(lubyContract, selectedAccount).then(() => {
+                setWrongAnswerCounter(prevState => prevState +1);
+                updatePlayerBalance();
+            });
         }
     }
 
@@ -64,18 +72,30 @@ export function ContextProvider({children}: ProviderPropType){
         
         if(questionsCounter === 2) {
             setGameIsOver(prevState => !prevState);
+            localStorage.setItem('lbg:started', 'false');
+            setQuestionsIsStarted(false);
         }
     }
 
     async function updatePlayerBalance(){
+        if(!lubyContract || !selectedAccount){
+            return;
+        }
         const balance = await getBalanceIndividual(lubyContract);
         setPlayerBalance(balance);
     }
 
-    function detectAccountChange(): string{
+    async function updateWalletBalance(){
+        if(!lubyContract || !selectedAccount){
+            return;
+        }
+        const wallet = await getBalanceOf(lubyContract, selectedAccount!)
+        setWalletBalance(wallet);
+    }
+
+    async function detectAccountChange() {
         const provider = (window as any).ethereum;
-        return provider.on('accountsChanged', (newAccounts: string[]) => {
-            console.log('account changed', newAccounts[0])
+        return provider.on('accountsChanged', async (newAccounts: string[]) => {
             setSelectedAccount(newAccounts[0]);
         })
     }
@@ -92,15 +112,22 @@ export function ContextProvider({children}: ProviderPropType){
 
             const balance = await getBalanceIndividual(lubyGameContract);
             setPlayerBalance(balance);
+            
+            const isStarted: boolean = JSON.parse(localStorage.getItem('lbg:started')!);
+            if(isStarted) {
+                setQuestionsIsStarted(true);
+            }
+            setFirstRender(false);
         }
         
         detectAccountChange();
+        updateWalletBalance();
+        updatePlayerBalance();
 
-        if(lubyContract){
-            return ;
-        }
         loadWeb3();
-    }, [lubyContract]);
+        // if(firstRender){
+        // }
+    }, [firstRender, selectedAccount]);
 
     return (
         <Context.Provider value={{
@@ -113,10 +140,12 @@ export function ContextProvider({children}: ProviderPropType){
             lubyContract,
             gameOwner,
             playerBalance,
+            walletBalance,
             handleStartQuestions,
             handleAnswersCounters,
             handleQuestionsCounter,
-            updatePlayerBalance
+            updatePlayerBalance,
+            updateWalletBalance
         }}>
             {children}
         </Context.Provider>
