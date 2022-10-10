@@ -8,13 +8,15 @@ import { Context } from "shared/context";
 import { Container } from "./styles";
 
 export default function StartGame () {
-   const {handleStartQuestions, updatePlayerBalance, gameIsOver, lubyContract, selectedAccount} = useContext(Context);
+   const {handleStartQuestions, updatePlayerBalance, updateWalletBalance, gameIsOver, lubyContract, selectedAccount} = useContext(Context);
 
    async function handleStartGame(){
       const start = await startGame(lubyContract, selectedAccount);
 
       if(start){
          updatePlayerBalance();
+         updateWalletBalance();
+         localStorage.setItem('lbg:started', 'true');
          return handleStartQuestions();
       }
    }

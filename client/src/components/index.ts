@@ -1,4 +1,5 @@
 import PrimaryButton from "./Buttons/Primary";
+import SecondaryButton from "./Buttons/Secondary";
 import CoinsControl from "./CoinsControl";
 import Footer from "./Footer";
 import QuestionContainer from "./GameComponents/QuestionContainer";
@@ -16,4 +17,5 @@ export {
    CoinsControl,
    StartGame,
    WrongCorrectAnswerCounter,
+   SecondaryButton,
 };

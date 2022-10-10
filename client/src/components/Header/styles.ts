@@ -12,10 +12,20 @@ export const Container = styled.header`
 
       display: flex;
       justify-content: space-between;
-      align-items: center;
 
       h4{
          color: ${({theme}) => theme.color.yellow};
+      }
+
+      p{
+         font-weight: 800;
+         opacity: .75;
+         
+         span{
+            margin-left: 1rem;
+            font-weight: 300;
+            color: ${({theme}) => theme.color.yellow};
+         }
       }
    }
 `;

@@ -1,30 +1,79 @@
 import { useContext } from "react";
 
-import {claimBalance} from 'shared/services/gameFunctions';
+import {claimBalance, mintLBC, withdrawAll} from 'shared/services/gameFunctions';
 
-import {PrimaryButton} from "components";
+import {PrimaryButton, SecondaryButton} from "components";
 import { Context } from "shared/context";
 
-import { Container } from "./styles";
+import { BalanceBox, Container } from "./styles";
 
 export default function CoinsControl(){
-   const {playerBalance, lubyContract, selectedAccount, updatePlayerBalance} = useContext(Context);
+   const tokenPurshaseAmout = 100;
+   const {
+      questionsIsStarted,
+      playerBalance, 
+      lubyContract, 
+      gameOwner,
+      selectedAccount, 
+      walletBalance, 
+      updatePlayerBalance, 
+      updateWalletBalance
+   } = useContext(Context);
 
    function handleClaimCoins(){
       claimBalance(lubyContract, selectedAccount)
-      .then(() => updatePlayerBalance);
+      .then(() => {
+         updatePlayerBalance();
+         updateWalletBalance();
+      });
+   }
+
+   function handleWithdrawAll() {
+      withdrawAll(lubyContract, selectedAccount).then(() => {
+         updateWalletBalance();
+      })
+   }
+
+   function getCoins(){
+      mintLBC(lubyContract, selectedAccount!, tokenPurshaseAmout).then(() => {
+         updateWalletBalance()
+      })
    }
 
    return (
       <Container>
-         <div className="balance">
-            <h2>Balance in Game:</h2>
-            <span>{playerBalance} LBCs</span>
-         </div>
+         <BalanceBox>
+            <div className="balance">
+               <span>{playerBalance} LBCs</span>
+               <h2>Game balance:</h2>
+            </div>
 
-         <PrimaryButton onClick={handleClaimCoins}>
-            Withdral
-         </PrimaryButton>
+            { !questionsIsStarted &&
+               <SecondaryButton onClick={handleClaimCoins}>
+                  Withdral
+               </SecondaryButton>
+            }
+         </BalanceBox>
+
+         <BalanceBox>
+            <div className="balance">
+               <span>{walletBalance} LBCs</span>
+               <h2>Game wallet balance:</h2>
+            </div>
+
+            { !questionsIsStarted  &&
+               <>
+                  { (gameOwner === selectedAccount) &&
+                     <SecondaryButton onClick={handleWithdrawAll}>
+                        Withdraw from wallet
+                     </SecondaryButton>
+                  }
+                  <PrimaryButton onClick={getCoins}>
+                     {`Buy ${tokenPurshaseAmout} LBC`}
+                  </PrimaryButton>
+               </>
+            }
+         </BalanceBox>
       </Container>
    )
 }
