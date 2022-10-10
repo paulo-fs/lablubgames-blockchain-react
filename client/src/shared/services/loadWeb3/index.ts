@@ -32,8 +32,8 @@ const LubyGame = require('../../../contracts/LubyGame.json');
       return account;
    }
 
-   function getBalanceOf(contract: any, account: string): number{
-      return contract.methods.balanceOf(account).call();
+   async function getBalanceOf(contract: any, account: string): Promise<number>{
+      return await contract.methods.balanceOf(account).call();
    }
 
    function getAllowance(contract: any, account: string): number{

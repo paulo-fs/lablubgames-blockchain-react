@@ -9,30 +9,37 @@ function mintLBC(contract: any, account: string, amount: number) {
       })
 }
 
-function startGame() {}
+async function startGame(contract: any, account: any) {
+   const amount = 100;
+   const response = await contract.methods.startGame(amount).send({from: account});
+   await contract.events.StartGame((error: any, event: any) => console.log(error, event));
 
-function  correctAnswer() {}
+   return Object.keys(response).includes('transactionHash');
+}
 
-function incorrectAnswer() {}
+async function  correctAnswer(contract: any) {
+   await contract.methods.correctAnswer(20);
+}
 
-function withdrawAll() {}
+async function incorrectAnswer(contract: any) {
+   await contract.methods.incorrectAnswer(30).call();
+}
+
+async function withdrawAll(contract: any) {
+   await contract.withdraw();
+}
 
 async function getBalanceOf(contract: any, account: string): Promise<number>{
    return await contract.methods.balanceOf(account).call();
 }
 
-function claimBalance() {}
+async function claimBalance(contract: any, acc: any) {
+   await contract.methods.claimBalance(30).send({from: acc})
+}
 
-async function getBalanceIndividual(contract: any) {
-   try {
-      const balance = await contract.methods
+async function getBalanceIndividual(contract: any): Promise<number> {
+   return await contract.methods
           .getBalanceIndividual().call();
-      console.log(balance);
-      return balance;
-  }
-  catch(error){
-      console.log('getBalanceIndividual', error);
-  }
 }
 
 export {
