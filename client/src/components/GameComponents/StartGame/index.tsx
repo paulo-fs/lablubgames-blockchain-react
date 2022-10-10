@@ -1,10 +1,23 @@
-import {PrimaryButton, WrongCorrectAnswerCounter} from "components";
 import { useContext } from "react";
+
+import {startGame } from 'shared/services/gameFunctions';
+
+import {PrimaryButton, WrongCorrectAnswerCounter} from "components";
 import { Context } from "shared/context";
+
 import { Container } from "./styles";
 
 export default function StartGame () {
-   const {handleStartQuestions, gameIsOver} = useContext(Context)
+   const {handleStartQuestions, updatePlayerBalance, gameIsOver, lubyContract, selectedAccount} = useContext(Context);
+
+   async function handleStartGame(){
+      const start = await startGame(lubyContract, selectedAccount);
+
+      if(start){
+         updatePlayerBalance();
+         return handleStartQuestions();
+      }
+   }
 
    return (
       <Container>
@@ -25,7 +38,7 @@ export default function StartGame () {
             </>
          }
 
-         <PrimaryButton onClick={handleStartQuestions}>
+         <PrimaryButton onClick={handleStartGame}>
             I'm ready
          </PrimaryButton>
 
