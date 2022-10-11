@@ -8,7 +8,7 @@ import { Context } from "shared/context";
 import { Container } from "./styles";
 
 export default function StartGame () {
-   const {handleStartQuestions, updatePlayerBalance, updateWalletBalance, gameIsOver, lubyContract, selectedAccount} = useContext(Context);
+   const {handleStartQuestions, updatePlayerBalance, updateWalletBalance, gameIsOver, lubyContract, selectedAccount, walletBalance} = useContext(Context);
 
    async function handleStartGame(){
       const start = await startGame(lubyContract, selectedAccount);
@@ -40,9 +40,15 @@ export default function StartGame () {
             </>
          }
 
-         <PrimaryButton onClick={handleStartGame}>
+         <PrimaryButton onClick={handleStartGame} disabled={walletBalance < 100}>
             I'm ready
          </PrimaryButton>
+
+         { walletBalance < 100 &&
+            <p className="noFunds">
+               You need at least 100 LBCs to start. <span>Buy some LBCs.</span>
+            </p>
+         }
 
          { gameIsOver && 
             <WrongCorrectAnswerCounter />

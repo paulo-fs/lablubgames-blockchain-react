@@ -20,4 +20,29 @@ export const Container = styled.div`
    button + button {
       margin-top: .5rem;
    }
+
+   button + div {
+      margin-top: .5rem;
+   }
+
+   .lowBalance {
+      text-align: center;
+      margin-bottom: 2rem;
+   }
+
+   .stopGame{
+      width: 100%;
+      
+      button{
+         width: 100%;
+         opacity: .75;
+         border: 2px solid ${({theme}) => theme.color.redT02};
+         background-color: ${({theme}) => theme.color.redT04};
+
+         transition: .2s;
+         &:hover {
+            background-color: ${({theme}) => theme.color.redT08};
+         }
+      }
+   }
 `;

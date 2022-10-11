@@ -35,4 +35,10 @@ export const BalanceBox = styled.div`
 
       border-bottom: 2px solid ${({theme}) => theme.color.whiteT02};
    }
+
+   .noFunds {
+      text-align: center;
+      margin-top: -0.5rem;
+      color: ${({theme}) => theme.color.red};
+   }
 `;

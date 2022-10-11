@@ -10,7 +10,7 @@ export const Container = styled.div`
 
    display: flex;
    flex-direction: column;
-   gap: 2rem;
+   gap: 1.5rem;
 
    text-align: center;
 
@@ -22,6 +22,14 @@ export const Container = styled.div`
 
       .gameOver{
          color: ${({theme}) => theme.color.red};
+      }
+   }
+
+   .noFunds{
+      font-size: 1rem;
+
+      span{
+         color: ${({theme}) => theme.color.green};
       }
    }
 `;

@@ -10,12 +10,12 @@ import { BalanceBox, Container } from "./styles";
 export default function CoinsControl(){
    const tokenPurshaseAmout = 100;
    const {
-      questionsIsStarted,
-      playerBalance, 
-      lubyContract, 
       gameOwner,
+      lubyContract, 
       selectedAccount, 
+      playerBalance, 
       walletBalance, 
+      questionsIsStarted,
       updatePlayerBalance, 
       updateWalletBalance
    } = useContext(Context);
@@ -49,9 +49,16 @@ export default function CoinsControl(){
             </div>
 
             { !questionsIsStarted &&
-               <SecondaryButton onClick={handleClaimCoins}>
-                  Withdral
-               </SecondaryButton>
+               <>
+                  <SecondaryButton onClick={handleClaimCoins}  disabled={playerBalance <= 0}>
+                     Claim coins
+                  </SecondaryButton>
+                  { playerBalance <= 0 &&
+                     <p className="noFunds">
+                        No LBCs to claim.
+                     </p>
+                  }
+               </>
             }
          </BalanceBox>
 
@@ -63,14 +70,14 @@ export default function CoinsControl(){
 
             { !questionsIsStarted  &&
                <>
-                  { (gameOwner === selectedAccount) &&
-                     <SecondaryButton onClick={handleWithdrawAll}>
-                        Withdraw from wallet
-                     </SecondaryButton>
-                  }
                   <PrimaryButton onClick={getCoins}>
                      {`Buy ${tokenPurshaseAmout} LBC`}
                   </PrimaryButton>
+                  { (gameOwner === selectedAccount) &&
+                     <SecondaryButton onClick={handleWithdrawAll}>
+                        Withdraw all balance
+                     </SecondaryButton>
+                  }
                </>
             }
          </BalanceBox>

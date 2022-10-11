@@ -12,7 +12,8 @@ export default function Main() {
             <h1>Play to Earn</h1>
             { (!questionsIsStarted || (gameIsOver)) &&
                <p>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet consectetur adipisicing elit.
+                  You need at least 100 LBCs to start the game. When started, 100 LBCs will be transfered to game balance and you can claim it at the end of the game. <br/>
+                  Incorrect answer: -20LBCs | Correct answer: +20LBCs
                </p>
             }
          </div>

@@ -17,7 +17,11 @@ export const defaultTheme = {
         greenT06: 'rgba(127, 185, 2, .6)',
         greenT04: 'rgba(127, 185, 2, .4)',
         greenT02: 'rgba(127, 185, 2, .2)',
-        red: '#FF7171',
+        red: '#D92B2B',
+        redT02: 'rgba(217, 43, 43, .2)',
+        redT04: 'rgba(217, 43, 43, .4)',
+        redT06: 'rgba(217, 43, 43, .6)',
+        redT08: 'rgba(217, 43, 43, .8)',
 
         boxShadow: '0px 0px 36px rgba(0, 0, 0, 0.1);'
     }

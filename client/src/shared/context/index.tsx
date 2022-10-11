@@ -25,6 +25,7 @@ interface ContextType {
     handleStartQuestions: () => void
     handleAnswersCounters: (value: boolean) => void
     handleQuestionsCounter: () => void
+    defineGameOver: () => void
     updatePlayerBalance: () => void
     updateWalletBalance: () => void
 }
@@ -42,8 +43,6 @@ export function ContextProvider({children}: ProviderPropType){
     const [lubyContract, setLubyContract] = useState<Contract | any>();
     const [playerBalance, setPlayerBalance] = useState<number>();
     const [walletBalance, setWalletBalance] = useState<number>();
-    const [firstRender, setFirstRender] = useState(true);
-
 
     function handleStartQuestions() {
         setQuestionsIsStarted(true);
@@ -53,27 +52,25 @@ export function ContextProvider({children}: ProviderPropType){
         setWrongAnswerCounter(prevState => prevState = 0);
     }
 
-    async function handleAnswersCounters (isCorrect: boolean) {
+    function handleAnswersCounters (isCorrect: boolean) {
         if(isCorrect) {
-            return correctAnswer(lubyContract, selectedAccount).then(() => {
-                setCorrectAnswerCounter(prevState => prevState +1);
-                updatePlayerBalance();
-            });
+            setCorrectAnswerCounter(prevState => prevState +1);
         } else {
-            return incorrectAnswer(lubyContract, selectedAccount).then(() => {
-                setWrongAnswerCounter(prevState => prevState +1);
-                updatePlayerBalance();
-            });
+            setWrongAnswerCounter(prevState => prevState +1);
         }
+    }
+
+    function defineGameOver(){
+        localStorage.setItem('lbg:started', 'false');
+        setGameIsOver(true);
+        setQuestionsIsStarted(false);
     }
 
     function handleQuestionsCounter() {
         setQuestionsCounter(prevState => prevState +1);
         
         if(questionsCounter === 2) {
-            setGameIsOver(prevState => !prevState);
-            localStorage.setItem('lbg:started', 'false');
-            setQuestionsIsStarted(false);
+            defineGameOver()
         }
     }
 
@@ -117,7 +114,6 @@ export function ContextProvider({children}: ProviderPropType){
             if(isStarted) {
                 setQuestionsIsStarted(true);
             }
-            setFirstRender(false);
         }
         
         detectAccountChange();
@@ -125,9 +121,7 @@ export function ContextProvider({children}: ProviderPropType){
         updatePlayerBalance();
 
         loadWeb3();
-        // if(firstRender){
-        // }
-    }, [firstRender, selectedAccount]);
+    }, [selectedAccount]);
 
     return (
         <Context.Provider value={{
@@ -144,6 +138,7 @@ export function ContextProvider({children}: ProviderPropType){
             handleStartQuestions,
             handleAnswersCounters,
             handleQuestionsCounter,
+            defineGameOver,
             updatePlayerBalance,
             updateWalletBalance
         }}>
