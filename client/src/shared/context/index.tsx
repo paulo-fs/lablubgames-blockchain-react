@@ -78,7 +78,7 @@ export function ContextProvider({children}: ProviderPropType){
         if(!lubyContract || !selectedAccount){
             return;
         }
-        const balance = await getBalanceIndividual(lubyContract);
+        const balance = await getBalanceIndividual(lubyContract, selectedAccount);
         setPlayerBalance(balance);
     }
 
@@ -107,7 +107,7 @@ export function ContextProvider({children}: ProviderPropType){
             const account = await getAccount(web3);
             setSelectedAccount(account);
 
-            const balance = await getBalanceIndividual(lubyGameContract);
+            const balance = await getBalanceIndividual(lubyGameContract, selectedAccount);
             setPlayerBalance(balance);
             
             const isStarted: boolean = JSON.parse(localStorage.getItem('lbg:started')!);

@@ -40,9 +40,8 @@ async function claimBalance(contract: any, acc: any) {
    await contract.methods.claimBalance(0).send({from: acc})
 }
 
-async function getBalanceIndividual(contract: any): Promise<number> {
-   return await contract.methods
-          .getBalanceIndividual().call();
+async function getBalanceIndividual(contract: any, acc: any): Promise<number> {
+   return await contract.methods.getBalanceIndividual().call({from: acc});
 }
 
 export {

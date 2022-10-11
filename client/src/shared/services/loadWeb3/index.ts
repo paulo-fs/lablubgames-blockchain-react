@@ -12,12 +12,6 @@ const LubyGame = require('../../../contracts/LubyGame.json');
    async function getContract(web3: Web3){
       const networkId = await web3.eth.net.getId();
       const network = LubyGame.networks[networkId];
-
-      // new web3.eth.Contract(
-      //    LubyGame.abi,
-      //    network && network.address
-      // ).events.StartGame()
-      // .on("data", () => console.log('oi'));
       
       return new web3.eth.Contract(
          LubyGame.abi,
